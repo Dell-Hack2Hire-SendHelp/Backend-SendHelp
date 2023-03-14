@@ -23,14 +23,19 @@ CREATE TABLE "Profile" (
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
+    "username" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "name" TEXT,
+    "salt" TEXT NOT NULL,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Profile_userId_key" ON "Profile"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
