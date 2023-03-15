@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authMiddlewares_1 = require("../middlewares/authMiddlewares");
+const sukauController_1 = require("../controllers/sukauController");
+const router = (0, express_1.Router)();
+router.get('/getApprovedOrders', authMiddlewares_1.isPlanter, sukauController_1.getApprovedOrders);
+router.get('/getMySelectedOrders', authMiddlewares_1.isPlanter, sukauController_1.getMySelectedOrders);
+router.post('/selectToPlantOrder', authMiddlewares_1.isPlanter, sukauController_1.selectToPlantOrder);
+exports.default = router;

@@ -8,6 +8,6 @@ const router = Router();
 
 router.get('/getAllOrders', isApe, getAllOrders );
 router.get('/getOrderById', isApe, getOrderById );
-router.get('/updateOrderStatus', isApe, updateOrderStatus );
+router.post('/updateOrderStatus', isApe, updateOrderStatus );
 
 export default router;

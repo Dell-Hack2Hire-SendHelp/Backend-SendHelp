@@ -4,5 +4,7 @@ const express_1 = require("express");
 const authMiddlewares_1 = require("../middlewares/authMiddlewares");
 const apeController_1 = require("../controllers/apeController");
 const router = (0, express_1.Router)();
-router.get('/inReviewOrders', authMiddlewares_1.isApe, apeController_1.getAllOrders);
+router.get('/getAllOrders', authMiddlewares_1.isApe, apeController_1.getAllOrders);
+router.get('/getOrderById', authMiddlewares_1.isApe, apeController_1.getOrderById);
+router.post('/updateOrderStatus', authMiddlewares_1.isApe, apeController_1.updateOrderStatus);
 exports.default = router;
