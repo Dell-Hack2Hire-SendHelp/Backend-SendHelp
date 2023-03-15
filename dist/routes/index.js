@@ -15,4 +15,8 @@ router.use('/auth', authRoute_1.default);
 router.use('/ape', apeRoute_1.default);
 router.use('/cust', custRoute_1.default);
 router.use('/sukau', sukauRoute_1.default);
+router.post('/', (req, res) => {
+    console.log(req.file);
+    res.send('Hello World!');
+});
 exports.default = router;

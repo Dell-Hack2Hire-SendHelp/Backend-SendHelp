@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { isApe } from "../middlewares/authMiddlewares";
-import { getAllOrders, getOrderById, updateOrderStatus } from "../controllers/apeController";
+import { getAllOrders, getOrderById,  updateOrderStatus } from "../controllers/apeController";
 
 const router = Router();
 

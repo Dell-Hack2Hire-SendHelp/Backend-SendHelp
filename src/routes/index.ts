@@ -16,5 +16,11 @@ router.use('/sukau', sukauRoute);
 
 
 
+router.post('/', (req, res) => {
+    console.log(req.file);
+    res.send('Hello World!');
+});
+
+
 export default router;
 

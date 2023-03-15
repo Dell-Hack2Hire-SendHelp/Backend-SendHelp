@@ -4,6 +4,8 @@ import path from 'path';
 import helmet from 'helmet';
 import session from 'express-session';
 import connectPg from 'connect-pg-simple';
+import multer from 'multer';
+import fs from 'fs';
 
 import indexRouter from '../routes/index';
 import { passport } from "../config/passport";
@@ -16,12 +18,35 @@ dotenv.config();
 export function configureApplication(app: Express) {
     configurePort(app);
     // configureHelmetSecurity(app);
+    configureMulter(app);
     configureBodyParser(app);
     configureStaticFiles(app);
     configureViewEngine(app);
     configureSession(app);
     configurePassport(app);
     configureIndexRouter(app);
+}
+
+
+function configureMulter(app: Express) {
+    // Create dir if not exists
+    const dir = 'public/uploads';
+    
+    if (!fs.existsSync(dir))
+        fs.mkdirSync(dir);
+
+
+    const storage = multer.diskStorage({
+        destination: (req, file, cb) => {
+            cb(null, 'public/uploads');
+        },
+        filename: (req, file, cb) => {
+            cb(null, file.originalname);
+        },
+    });
+
+    const upload = multer({ storage });
+    app.use(upload.single('image'));
 }
 
 
