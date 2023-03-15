@@ -11,4 +11,8 @@ const router = (0, express_1.Router)();
 router.use('/todo', todoRoute_1.default);
 router.use('/auth', authRoute_1.default);
 router.use('/ape', apeRoute_1.default);
+router.get('/test', (req, res) => {
+    res.cookie('test', 'test');
+    res.status(200).json({ message: "Test route" });
+});
 exports.default = router;

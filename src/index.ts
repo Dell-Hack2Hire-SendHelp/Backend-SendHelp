@@ -20,7 +20,6 @@ const app = express();
 app.use(cors(corsOptions));
 configureApplication(app);
 
-
 app.listen(
     app.get('port'), 
     async ()=> {
