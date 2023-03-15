@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.findAllOrders = exports.findOrderByReceiverName = exports.findOrderById = exports.insertNewOrder = void 0;
+exports.updateOrder = exports.findAllOrders = exports.findOrderByReceiverName = exports.findOrderById = exports.insertNewOrder = void 0;
 const client_1 = require("@prisma/client");
 const db_1 = require("./db");
 const prisma_pagination_1 = require("prisma-pagination");
@@ -66,3 +66,12 @@ function findAllOrders({ page = 1, searchByUsername, status, }) {
     });
 }
 exports.findAllOrders = findAllOrders;
+function updateOrder(id, data) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield db.order.update({
+            where: { id },
+            data
+        });
+    });
+}
+exports.updateOrder = updateOrder;
