@@ -26,3 +26,17 @@ export async function getMyOrders(req: Request, res: Response) {
     });
     res.status(200).json(orders);
 }
+
+
+
+export async function getMyOrderById(req: Request, res: Response) {
+    const id = parseInt(req.query.id as string);
+    
+    const orders = await findOrdersWhere({
+        id,
+        customer: {
+            id: req.user!.id,
+        }
+    });
+    res.status(200).json(orders);
+}

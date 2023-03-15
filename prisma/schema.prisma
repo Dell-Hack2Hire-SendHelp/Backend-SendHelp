@@ -42,7 +42,6 @@ model AppUser {
 
 model Order {
   id              Int      @id @unique @default(autoincrement())
-  trees           Tree[]
   order_date      DateTime @default(now())
   receiver_name   String
   receiver_email  String
@@ -50,22 +49,12 @@ model Order {
   trees_number    Int
   message         String @default("This goes towards the restoration of the forest corridor along the Lower Kinabatangan, Sabah, malaysia, Borneo.")
   status          OrderStatus @default(IN_REVIEW)
+  longitude       String?
+  latitude        String?
+  image           String?
 
   planter         AppUser? @relation("plant_by",fields: [planter_id], references: [id])
   customer        AppUser  @relation("order_by",fields: [customer_id], references: [id])
   planter_id      Int?
   customer_id     Int
-}
-
-
-
-
-model Tree {
-  id        Int    @id @unique @default(autoincrement())
-  longitude String
-  latitude  String 
-  image     String?
-
-  Order     Order  @relation(fields: [order_id], references: [id])
-  order_id  Int
 }

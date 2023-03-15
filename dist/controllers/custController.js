@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMyOrders = exports.createPurchase = void 0;
+exports.getMyOrderById = exports.getMyOrders = exports.createPurchase = void 0;
 const orderService_1 = require("../services/orderService");
 function createPurchase(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -37,3 +37,16 @@ function getMyOrders(req, res) {
     });
 }
 exports.getMyOrders = getMyOrders;
+function getMyOrderById(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const id = parseInt(req.query.id);
+        const orders = yield (0, orderService_1.findOrdersWhere)({
+            id,
+            customer: {
+                id: req.user.id,
+            }
+        });
+        res.status(200).json(orders);
+    });
+}
+exports.getMyOrderById = getMyOrderById;
