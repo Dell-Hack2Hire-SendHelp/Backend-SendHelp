@@ -8,24 +8,23 @@ const paginate = createPaginator({ perPage: 10 });
 
 
 interface OrderQueryParams {
-    page: number;
-    searchByUsername: string;
+    page?: number;
+    searchByUsername?: string;
+    status?: OrderStatus;
 }
 
 
 
-function getFilterObject(status: OrderStatus, searchByUsername: string): Prisma.OrderFindManyArgs {
-    return {
-        where: {
-            status: status,
-            customer: {
-                username: {
-                    contains: searchByUsername,
-                    mode: "insensitive"
-                }
-            }
-        }
-    };
+function filterObj(
+    status?: OrderStatus, 
+    searchByUsername?: string,
+): Prisma.OrderFindManyArgs {
+
+    const filter = { where: {} as Prisma.OrderWhereInput };
+    if (status) filter.where.status = status;
+    if (searchByUsername) filter.where.customer = { username: { contains: searchByUsername, mode: "insensitive" } };
+
+    return filter;
 }
 
 
@@ -66,6 +65,8 @@ export async function insertNewOrder({
 
 
 
+
+
 export async function findOrderById(id: number) {
     return await db.order.findUnique({
         where: { id }
@@ -82,14 +83,14 @@ export async function findOrderByReceiverName(receiverName: string) {
 }
 
 
-
-export async function getAllInReviewOrders({
-    page,
+export async function findAllOrders({
+    page = 1,
     searchByUsername,
+    status,
 }: OrderQueryParams) {
     return await paginate<Order, Prisma.OrderFindManyArgs>(
         db.order,
-        getFilterObject(OrderStatus.IN_REVIEW, searchByUsername),
+        filterObj(status, searchByUsername),
         { page, }
     );
 }

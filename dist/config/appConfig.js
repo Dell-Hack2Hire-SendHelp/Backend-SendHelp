@@ -29,7 +29,11 @@ function configurePort(app) {
     app.set('port', port);
 }
 function configureHelmetSecurity(app) {
-    app.use((0, helmet_1.default)());
+    app.use((0, helmet_1.default)({
+        crossOriginEmbedderPolicy: false,
+        crossOriginResourcePolicy: false,
+        crossOriginOpenerPolicy: false,
+    }));
 }
 function configureBodyParser(app) {
     app.use(express_1.default.json());

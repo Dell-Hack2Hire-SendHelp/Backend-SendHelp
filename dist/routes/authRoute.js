@@ -5,8 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const passport_1 = __importDefault(require("passport"));
-const db_1 = require("../services/db");
-const db = db_1.DB.instance;
 const router = (0, express_1.Router)();
 const authController_1 = require("../controllers/authController");
 router.get('/failedLogin', authController_1.onFailedLogin);

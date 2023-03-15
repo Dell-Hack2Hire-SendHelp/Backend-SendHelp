@@ -9,24 +9,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllInReviewOrders = exports.findOrderByReceiverName = exports.findOrderById = exports.insertNewOrder = void 0;
+exports.findAllOrders = exports.findOrderByReceiverName = exports.findOrderById = exports.insertNewOrder = void 0;
 const client_1 = require("@prisma/client");
 const db_1 = require("./db");
 const prisma_pagination_1 = require("prisma-pagination");
 const db = db_1.DB.instance;
 const paginate = (0, prisma_pagination_1.createPaginator)({ perPage: 10 });
-function getFilterObject(status, searchByUsername) {
-    return {
-        where: {
-            status: status,
-            customer: {
-                username: {
-                    contains: searchByUsername,
-                    mode: "insensitive"
-                }
-            }
-        }
-    };
+function filterObj(status, searchByUsername) {
+    const filter = { where: {} };
+    if (status)
+        filter.where.status = status;
+    if (searchByUsername)
+        filter.where.customer = { username: { contains: searchByUsername, mode: "insensitive" } };
+    return filter;
 }
 function insertNewOrder({ receiverName, receiverEmail, treesNumbers, customerId, isCoordRequired, message = "This goes towards the restoration of the forest corridor along the Lower Kinabatangan, Sabah, malaysia, Borneo.", status = client_1.OrderStatus.IN_REVIEW, }) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -65,9 +60,9 @@ function findOrderByReceiverName(receiverName) {
     });
 }
 exports.findOrderByReceiverName = findOrderByReceiverName;
-function getAllInReviewOrders({ page, searchByUsername, }) {
+function findAllOrders({ page = 1, searchByUsername, status, }) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield paginate(db.order, getFilterObject(client_1.OrderStatus.IN_REVIEW, searchByUsername), { page, });
+        return yield paginate(db.order, filterObj(status, searchByUsername), { page, });
     });
 }
-exports.getAllInReviewOrders = getAllInReviewOrders;
+exports.findAllOrders = findAllOrders;

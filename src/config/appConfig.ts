@@ -31,7 +31,11 @@ function configurePort(app: Express) {
 }
 
 function configureHelmetSecurity(app: Express) {
-    app.use(helmet());
+    app.use(helmet({
+        crossOriginEmbedderPolicy: false,
+        crossOriginResourcePolicy: false,
+        crossOriginOpenerPolicy: false,
+    }));
 }
 
 function configureBodyParser(app: Express) {

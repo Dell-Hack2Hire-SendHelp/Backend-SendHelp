@@ -1,9 +1,5 @@
 import { Router } from "express";
-import crypto from "crypto";
 import passport from "passport";
-
-import { DB } from "../services/db";
-const db = DB.instance;
 
 const router = Router();
 
