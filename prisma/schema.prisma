@@ -1,5 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+enum Role {
+  CUSTOMER
+  APE
+  PLANTER
+}
+
+
 
 generator client {
   provider = "prisma-client-js"
@@ -14,38 +20,42 @@ model AppUser {
   id       Int     @id @unique @default(autoincrement())
   username String  @unique
   password String
+  passwordSalt String
   role     Role
   fullname String
   email    String?
+
   plant_by Order[] @relation("plant_by")
   order_by Order[] @relation("order_by")
 }
 
+
+
 model Order {
   id              Int      @id @unique
-  planter         AppUser @relation("plant_by",fields: [planter_id], references: [id])
-  customer        AppUser  @relation("order_by",fields: [customer_id], references: [id])
   trees           Tree[]
   order_date      DateTime
   receiver_name   String
   receiver_email  String
-  isCoordRequired Boolean? @default(true)
+  isCoordRequired Boolean @default(true)
   trees_number    Int
-  planter_id      Int
+  message         String?
+
+  planter         AppUser? @relation("plant_by",fields: [planter_id], references: [id])
+  customer        AppUser  @relation("order_by",fields: [customer_id], references: [id])
+  planter_id      Int?
   customer_id     Int
 }
+
+
+
 
 model Tree {
   id        Int    @id @unique
   longitude String
-  latitude  String @unique
-  image     String
+  latitude  String 
+  image     String?
+
   Order     Order  @relation(fields: [order_id], references: [id])
   order_id  Int
-}
-
-enum Role {
-  CUSTOMER
-  APE
-  PLANTER
 }

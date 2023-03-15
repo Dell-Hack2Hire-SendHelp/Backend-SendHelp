@@ -40,14 +40,14 @@ const passport_1 = __importDefault(require("passport"));
 exports.passport = passport_1.default;
 const passport_local_1 = require("passport-local");
 const crypto = __importStar(require("crypto"));
-const db_1 = require("./db");
+const db_1 = require("../services/db");
 // Define how to serialize the user object into the session
 passport_1.default.serializeUser((user, done) => {
     done(null, user.id);
 });
 // Define how to deserialize the user object from the session to be put in req.user
 passport_1.default.deserializeUser((id, cb) => __awaiter(void 0, void 0, void 0, function* () {
-    const u = yield db_1.DB.instance.user.findUnique({
+    const u = yield db_1.DB.instance.appUser.findUnique({
         where: { id }
     });
     cb(null, u);
@@ -58,7 +58,7 @@ const localStrategy = new passport_local_1.Strategy({
     usernameField: "username",
     passwordField: "password",
 }, (username, password, cb) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield db_1.DB.instance.user.findFirst({
+    const user = yield db_1.DB.instance.appUser.findFirst({
         where: {
             username: username
         }
@@ -67,7 +67,7 @@ const localStrategy = new passport_local_1.Strategy({
     if (!user)
         return cb(null, false, { message: "Incorrect username or password" });
     // Incorrect password
-    const hash = crypto.pbkdf2Sync(password, user.salt, 1000, 64, "sha512").toString("hex");
+    const hash = crypto.pbkdf2Sync(password, user.passwordSalt, 1000, 64, "sha512").toString("hex");
     if (user.password !== hash)
         return cb(null, false, { message: "Incorrect username or password" });
     return cb(null, user, { message: "Logged in successfully" });

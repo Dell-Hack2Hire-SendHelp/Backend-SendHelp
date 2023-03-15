@@ -2,14 +2,14 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import * as crypto from "crypto";
 
-import { DB } from "./db";
-import { User as PrismaUserModel } from "@prisma/client";
+import { DB } from "../services/db";
+import { AppUser } from "@prisma/client";
 
 
 // The Express.User type has to be extended to include our own User model properties
 declare global {
     namespace Express {
-        interface User extends PrismaUserModel {}
+        interface User extends AppUser {}
     }
 }
 
@@ -21,7 +21,7 @@ passport.serializeUser((user, done)=> {
 
 // Define how to deserialize the user object from the session to be put in req.user
 passport.deserializeUser(async (id: number, cb)=> {
-    const u = await DB.instance.user.findUnique({
+    const u = await DB.instance.appUser.findUnique({
         where: { id }
     });
     cb(null, u);
@@ -37,7 +37,7 @@ const localStrategy = new LocalStrategy(
         passwordField: "password",
     },
     async (username, password, cb)=> {
-        const user = await DB.instance.user.findFirst({
+        const user = await DB.instance.appUser.findFirst({
             where: { 
                 username: username 
             }
@@ -47,7 +47,7 @@ const localStrategy = new LocalStrategy(
         if (!user) return cb(null, false, { message: "Incorrect username or password"} );
 
         // Incorrect password
-        const hash = crypto.pbkdf2Sync(password, user.salt, 1000, 64, "sha512").toString("hex");
+        const hash = crypto.pbkdf2Sync(password, user.passwordSalt, 1000, 64, "sha512").toString("hex");
         if (user.password !== hash) return cb(null, false, { message: "Incorrect username or password"} );
 
         return cb(null, user, { message: "Logged in successfully"} );
@@ -56,5 +56,4 @@ const localStrategy = new LocalStrategy(
 
 
 passport.use(localStrategy);
-
 export { passport };
