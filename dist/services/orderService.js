@@ -15,14 +15,23 @@ const db_1 = require("./db");
 const db = db_1.DB.instance;
 function findAllOrders() {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield db.order.findMany();
+        return yield db.order.findMany({
+            include: {
+                customer: true,
+                planter: true,
+            }
+        });
     });
 }
 exports.findAllOrders = findAllOrders;
 function findOrderById(id) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield db.order.findUnique({
-            where: { id }
+            where: { id },
+            include: {
+                customer: true,
+                planter: true,
+            }
         });
     });
 }
@@ -30,7 +39,11 @@ exports.findOrderById = findOrderById;
 function findOrdersWhere(where) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield db.order.findMany({
-            where
+            where,
+            include: {
+                customer: true,
+                planter: true,
+            }
         });
     });
 }

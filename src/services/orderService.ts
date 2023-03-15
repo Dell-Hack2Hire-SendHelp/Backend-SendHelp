@@ -6,20 +6,33 @@ const db = DB.instance;
 
 
 export async function findAllOrders() {
-    return await db.order.findMany();
+    return await db.order.findMany({
+        include: {
+            customer: true,
+            planter: true,
+        }
+    });
 }
 
 
 export async function findOrderById(id: number) {
     return await db.order.findUnique({
-        where: { id }
+        where: { id },
+        include: {
+            customer: true,
+            planter: true,
+        }
     });
 }
 
 
 export async function findOrdersWhere(where: Prisma.OrderWhereInput) {
     return await db.order.findMany({
-        where
+        where,
+        include: {
+            customer: true,
+            planter: true,
+        }
     });
 }
 
