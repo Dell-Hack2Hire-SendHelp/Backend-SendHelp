@@ -52,6 +52,7 @@ export function onFailedLogin(req: Request, res: Response) {
 }
 
 export function onSuccessLogin(req: Request, res: Response) {
+    res.cookie("test", "yesy");
     // console.log(req.user);
     res.status(200).json({
         message: "Logged in successfully",

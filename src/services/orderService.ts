@@ -30,17 +30,17 @@ function filterObj(
 
 
 export async function insertNewOrder({
-    receiverName,
-    receiverEmail,
-    treesNumbers,
+    receiversName,
+    receiversEmail,
+    treeNumbers,
     customerId,
     isCoordRequired,
     message = "This goes towards the restoration of the forest corridor along the Lower Kinabatangan, Sabah, malaysia, Borneo.",
     status = OrderStatus.IN_REVIEW,
 }: {
-    receiverName: string,
-    receiverEmail: string,
-    treesNumbers: number,
+    receiversName: string,
+    receiversEmail: string,
+    treeNumbers: number,
     customerId: number,
     isCoordRequired?: boolean,
     message?: string,
@@ -48,9 +48,9 @@ export async function insertNewOrder({
 }) {
     await db.order.create({
         data: {
-            receiver_name: receiverName,
-            receiver_email: receiverEmail,
-            trees_number: treesNumbers,
+            receiver_name: receiversName,
+            receiver_email: receiversEmail,
+            trees_number: treeNumbers,
             customer: {
                 connect: { id: customerId }
             },
