@@ -7,7 +7,6 @@ exports.configureApplication = void 0;
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const path_1 = __importDefault(require("path"));
-const helmet_1 = __importDefault(require("helmet"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_pg_simple_1 = __importDefault(require("connect-pg-simple"));
 const index_1 = __importDefault(require("../routes/index"));
@@ -29,11 +28,11 @@ function configurePort(app) {
     app.set('port', port);
 }
 function configureHelmetSecurity(app) {
-    app.use((0, helmet_1.default)({
-        crossOriginEmbedderPolicy: false,
-        crossOriginResourcePolicy: false,
-        crossOriginOpenerPolicy: false,
-    }));
+    // app.use(helmet({
+    //     crossOriginEmbedderPolicy: false,
+    //     crossOriginResourcePolicy: false,
+    //     crossOriginOpenerPolicy: false,
+    // }));
 }
 function configureBodyParser(app) {
     app.use(express_1.default.json());

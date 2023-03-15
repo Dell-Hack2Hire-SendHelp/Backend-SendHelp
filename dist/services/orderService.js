@@ -23,13 +23,13 @@ function filterObj(status, searchByUsername) {
         filter.where.customer = { username: { contains: searchByUsername, mode: "insensitive" } };
     return filter;
 }
-function insertNewOrder({ receiverName, receiverEmail, treesNumbers, customerId, isCoordRequired, message = "This goes towards the restoration of the forest corridor along the Lower Kinabatangan, Sabah, malaysia, Borneo.", status = client_1.OrderStatus.IN_REVIEW, }) {
+function insertNewOrder({ receiversName, receiversEmail, treeNumbers, customerId, isCoordRequired, message = "This goes towards the restoration of the forest corridor along the Lower Kinabatangan, Sabah, malaysia, Borneo.", status = client_1.OrderStatus.IN_REVIEW, }) {
     return __awaiter(this, void 0, void 0, function* () {
         yield db.order.create({
             data: {
-                receiver_name: receiverName,
-                receiver_email: receiverEmail,
-                trees_number: treesNumbers,
+                receiver_name: receiversName,
+                receiver_email: receiversEmail,
+                trees_number: treeNumbers,
                 customer: {
                     connect: { id: customerId }
                 },
