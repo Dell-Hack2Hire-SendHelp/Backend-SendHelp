@@ -9,25 +9,65 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllInReviewOrders = void 0;
+exports.getAllInReviewOrders = exports.findOrderByReceiverName = exports.findOrderById = exports.insertNewOrder = void 0;
 const client_1 = require("@prisma/client");
 const db_1 = require("./db");
 const prisma_pagination_1 = require("prisma-pagination");
 const db = db_1.DB.instance;
 const paginate = (0, prisma_pagination_1.createPaginator)({ perPage: 10 });
+function getFilterObject(status, searchByUsername) {
+    return {
+        where: {
+            status: status,
+            customer: {
+                username: {
+                    contains: searchByUsername,
+                    mode: "insensitive"
+                }
+            }
+        }
+    };
+}
+function insertNewOrder({ receiverName, receiverEmail, treesNumbers, customerId, isCoordRequired, message = "This goes towards the restoration of the forest corridor along the Lower Kinabatangan, Sabah, malaysia, Borneo.", status = client_1.OrderStatus.IN_REVIEW, }) {
+    return __awaiter(this, void 0, void 0, function* () {
+        yield db.order.create({
+            data: {
+                receiver_name: receiverName,
+                receiver_email: receiverEmail,
+                trees_number: treesNumbers,
+                customer: {
+                    connect: { id: customerId }
+                },
+                status,
+                isCoordRequired,
+                message,
+            }
+        });
+        console.log(`Order created successfully at ${new Date().toLocaleString()}`);
+    });
+}
+exports.insertNewOrder = insertNewOrder;
+function findOrderById(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield db.order.findUnique({
+            where: { id }
+        });
+    });
+}
+exports.findOrderById = findOrderById;
+function findOrderByReceiverName(receiverName) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield db.order.findFirst({
+            where: {
+                receiver_name: receiverName
+            }
+        });
+    });
+}
+exports.findOrderByReceiverName = findOrderByReceiverName;
 function getAllInReviewOrders({ page, searchByUsername, }) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield db.order.findMany({
-            where: {
-                status: client_1.OrderStatus.IN_REVIEW,
-                customer: {
-                    username: {
-                        contains: searchByUsername,
-                        mode: "insensitive"
-                    }
-                }
-            },
-        });
+        return yield paginate(db.order, getFilterObject(client_1.OrderStatus.IN_REVIEW, searchByUsername), { page, });
     });
 }
 exports.getAllInReviewOrders = getAllInReviewOrders;
