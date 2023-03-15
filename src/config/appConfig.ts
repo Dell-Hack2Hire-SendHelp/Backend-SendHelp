@@ -31,9 +31,9 @@ export function configureApplication(app: Express) {
 function configureMulter(app: Express) {
     // Create dir if not exists
     const dir = 'public/uploads';
-    
+
     if (!fs.existsSync(dir))
-        fs.mkdirSync(dir);
+        fs.mkdirSync(dir, { recursive: true });
 
 
     const storage = multer.diskStorage({

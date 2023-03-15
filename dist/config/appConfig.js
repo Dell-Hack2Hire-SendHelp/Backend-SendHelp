@@ -31,7 +31,7 @@ function configureMulter(app) {
     // Create dir if not exists
     const dir = 'public/uploads';
     if (!fs_1.default.existsSync(dir))
-        fs_1.default.mkdirSync(dir);
+        fs_1.default.mkdirSync(dir, { recursive: true });
     const storage = multer_1.default.diskStorage({
         destination: (req, file, cb) => {
             cb(null, 'public/uploads');
