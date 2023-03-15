@@ -17,9 +17,9 @@ function initializeDefaultOrder() {
         const order1 = yield (0, orderService_1.findOrderByReceiverName)("Customer 1 Order");
         if (!order1)
             yield (0, orderService_1.insertNewOrder)({
-                receiverName: "Customer 1 Order",
-                receiverEmail: "customer1@gmail.com",
-                treesNumbers: 10,
+                receiversName: "Customer 1 Order",
+                receiversEmail: "customer1@gmail.com",
+                treeNumbers: 10,
                 customerId: 1,
             });
         console.log("Default orders initialized successfully.");

@@ -94,3 +94,12 @@ export async function findAllOrders({
         { page, }
     );
 }
+
+
+
+export async function updateOrder(id: number, data: Partial<Order>) {
+    return await db.order.update({
+        where: { id },
+        data
+    });
+}

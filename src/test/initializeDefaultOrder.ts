@@ -10,9 +10,9 @@ export async function initializeDefaultOrder() {
 
     if (!order1) 
         await insertNewOrder({
-            receiverName: "Customer 1 Order",
-            receiverEmail: "customer1@gmail.com",
-            treesNumbers: 10,
+            receiversName: "Customer 1 Order",
+            receiversEmail: "customer1@gmail.com",
+            treeNumbers: 10,
             customerId: 1,
         });
 

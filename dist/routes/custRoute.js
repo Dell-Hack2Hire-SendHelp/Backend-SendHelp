@@ -1,15 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
-const client_1 = require("@prisma/client");
 const custController_1 = require("../controllers/custController");
+const authMiddlewares_1 = require("../middlewares/authMiddlewares");
 const router = (0, express_1.Router)();
-const db = new client_1.PrismaClient();
-router.post("/purchase", custController_1.createPurchase);
-// router.get("/history")
-router.get("/cookie", (req, res) => {
-    res.cookie("test", "yesy");
-    // set a cookie to the client with response
-    res.status(200).json({ message: "Cookie set" });
-});
+router.post("/purchase", authMiddlewares_1.isCustomer, custController_1.createPurchase);
 exports.default = router;

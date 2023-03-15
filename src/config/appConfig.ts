@@ -15,7 +15,7 @@ dotenv.config();
 
 export function configureApplication(app: Express) {
     configurePort(app);
-    configureHelmetSecurity(app);
+    // configureHelmetSecurity(app);
     configureBodyParser(app);
     configureStaticFiles(app);
     configureViewEngine(app);
@@ -31,11 +31,7 @@ function configurePort(app: Express) {
 }
 
 function configureHelmetSecurity(app: Express) {
-    // app.use(helmet({
-    //     crossOriginEmbedderPolicy: false,
-    //     crossOriginResourcePolicy: false,
-    //     crossOriginOpenerPolicy: false,
-    // }));
+    app.use(helmet());
 }
 
 function configureBodyParser(app: Express) {

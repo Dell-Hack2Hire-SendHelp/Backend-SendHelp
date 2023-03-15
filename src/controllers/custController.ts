@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { isCustomer } from "../middlewares/authMiddlewares";
 import { insertNewOrder } from "../services/orderService";
 
-export function createPurchase(req: Request, res: Response) {
+export async function createPurchase(req: Request, res: Response) {
     const order = {
         receiversName: req.body.receiversName,
         receiversEmail: req.body.receiversEmail,
@@ -12,7 +11,6 @@ export function createPurchase(req: Request, res: Response) {
         customerId: req.user!.id,
     }
     
-    console.log(order);
-    insertNewOrder(order);
+    await insertNewOrder(order);
     res.status(201).json({ message: "Order created successfully" });
 }

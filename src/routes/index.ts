@@ -12,10 +12,6 @@ router.use('/auth', authRoute);
 router.use('/ape', apeRoute);
 router.use('/cust', custRoute);
 
-router.get('/test', (req, res) => {
-    res.cookie('test', 'test');
-    res.status(200).json({ message: "Test route" });
-});
 
 
 export default router;
