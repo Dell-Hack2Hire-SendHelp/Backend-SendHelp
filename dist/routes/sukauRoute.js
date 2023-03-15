@@ -8,4 +8,5 @@ router.get('/getApprovedOrders', authMiddlewares_1.isPlanter, sukauController_1.
 router.get('/getMySelectedOrders', authMiddlewares_1.isPlanter, sukauController_1.getMySelectedOrders);
 router.post('/selectToPlantOrder', authMiddlewares_1.isPlanter, sukauController_1.selectToPlantOrder);
 router.get('/getOrderById', authMiddlewares_1.isPlanter, sukauController_1.getOrderById);
+router.post('/completeOrder', authMiddlewares_1.isPlanter, sukauController_1.completeOrder);
 exports.default = router;

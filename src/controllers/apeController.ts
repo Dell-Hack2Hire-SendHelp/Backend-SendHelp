@@ -3,6 +3,7 @@ import { OrderStatus } from "@prisma/client";
 import { Request, Response } from "express";
 
 import { findAllOrders, findOrderById, updateOrder } from "../services/orderService";
+import { sendStatusEmail } from "../services/mailService";
 
 
 
@@ -26,5 +27,7 @@ export async function updateOrderStatus(req: Request, res: Response) {
     const status = OrderStatus[req.body.status as keyof typeof OrderStatus];
 
     const order = await updateOrder(id, { status });
+
+    sendStatusEmail(order.receiver_email, status);
     res.status(200).json({ message: "Order status updated successfully", order });
 }
