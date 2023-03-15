@@ -9,9 +9,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.selectToPlantOrder = exports.getMySelectedOrders = exports.getApprovedOrders = void 0;
+exports.completeOrder = exports.selectToPlantOrder = exports.getMySelectedOrders = exports.getApprovedOrders = void 0;
 const client_1 = require("@prisma/client");
 const orderService_1 = require("../services/orderService");
+const mailService_1 = require("../services/mailService");
 function getApprovedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const orders = yield (0, orderService_1.findOrdersWhere)({
@@ -40,7 +41,23 @@ function selectToPlantOrder(req, res) {
             status: client_1.OrderStatus.PLANTING,
             planter_id: req.user.id,
         });
+        (0, mailService_1.sendStatusEmail)(order.receiver_email, client_1.OrderStatus.PLANTING);
         res.status(200).json({ message: "Order selected successfully", order });
     });
 }
 exports.selectToPlantOrder = selectToPlantOrder;
+function completeOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const id = parseInt(req.body.id);
+        const latitude = req.body.latitude;
+        const longitude = req.body.longitude;
+        const order = yield (0, orderService_1.updateOrder)(id, {
+            status: client_1.OrderStatus.COMPLETED,
+            latitude,
+            longitude,
+        });
+        (0, mailService_1.sendStatusEmail)(order.receiver_email, client_1.OrderStatus.COMPLETED);
+        res.status(200).json({ message: "Order completed successfully", order });
+    });
+}
+exports.completeOrder = completeOrder;

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateOrderStatus = exports.getOrderById = exports.getAllOrders = void 0;
 const client_1 = require("@prisma/client");
 const orderService_1 = require("../services/orderService");
+const mailService_1 = require("../services/mailService");
 function getAllOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const orders = yield (0, orderService_1.findAllOrders)();
@@ -32,6 +33,7 @@ function updateOrderStatus(req, res) {
         const id = parseInt(req.body.id);
         const status = client_1.OrderStatus[req.body.status];
         const order = yield (0, orderService_1.updateOrder)(id, { status });
+        (0, mailService_1.sendStatusEmail)(order.receiver_email, status);
         res.status(200).json({ message: "Order status updated successfully", order });
     });
 }
