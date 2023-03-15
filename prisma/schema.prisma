@@ -6,6 +6,15 @@ enum Role {
 }
 
 
+enum OrderStatus {
+  IN_REVIEW
+  APPROVED
+  REJECTED
+  PLANTING
+  COMPLETED
+}
+
+
 
 generator client {
   provider = "prisma-client-js"
@@ -34,12 +43,13 @@ model AppUser {
 model Order {
   id              Int      @id @unique
   trees           Tree[]
-  order_date      DateTime
+  order_date      DateTime @default(now())
   receiver_name   String
   receiver_email  String
   isCoordRequired Boolean @default(true)
   trees_number    Int
   message         String?
+  status          OrderStatus @default(IN_REVIEW)
 
   planter         AppUser? @relation("plant_by",fields: [planter_id], references: [id])
   customer        AppUser  @relation("order_by",fields: [customer_id], references: [id])
