@@ -7,4 +7,5 @@ const router = (0, express_1.Router)();
 router.get('/getApprovedOrders', authMiddlewares_1.isPlanter, sukauController_1.getApprovedOrders);
 router.get('/getMySelectedOrders', authMiddlewares_1.isPlanter, sukauController_1.getMySelectedOrders);
 router.post('/selectToPlantOrder', authMiddlewares_1.isPlanter, sukauController_1.selectToPlantOrder);
+router.get('/getOrderById', authMiddlewares_1.isPlanter, sukauController_1.getOrderById);
 exports.default = router;

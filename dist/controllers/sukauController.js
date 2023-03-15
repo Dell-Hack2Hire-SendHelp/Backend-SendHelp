@@ -9,9 +9,17 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.selectToPlantOrder = exports.getMySelectedOrders = exports.getApprovedOrders = void 0;
+exports.selectToPlantOrder = exports.getMySelectedOrders = exports.getApprovedOrders = exports.getOrderById = void 0;
 const client_1 = require("@prisma/client");
 const orderService_1 = require("../services/orderService");
+function getOrderById(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const id = parseInt(req.query.id);
+        const order = yield (0, orderService_1.findOrderById)(id);
+        res.status(200).json(order);
+    });
+}
+exports.getOrderById = getOrderById;
 function getApprovedOrders(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const orders = yield (0, orderService_1.findOrdersWhere)({

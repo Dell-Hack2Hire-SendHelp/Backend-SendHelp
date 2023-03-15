@@ -2,9 +2,13 @@
 import { OrderStatus } from "@prisma/client";
 import { Request, Response } from "express";
 
-import { findOrdersWhere, updateOrder } from "../services/orderService";
+import { findOrdersWhere, updateOrder, findOrderById } from "../services/orderService";
 
-
+export async function getOrderById(req: Request, res: Response) {
+    const id = parseInt(req.query.id as string);
+    const order = await findOrderById(id);
+    res.status(200).json(order);
+}
 
 export async function getApprovedOrders(req: Request, res: Response) {
     const orders = await findOrdersWhere({
