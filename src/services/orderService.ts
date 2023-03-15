@@ -94,3 +94,12 @@ export async function findAllOrders({
         { page, }
     );
 }
+
+
+// Update
+export async function updateOrderStatus(id: number, status: OrderStatus) {
+    await db.order.update({
+        where: { id },
+        data: { status }
+    });
+}

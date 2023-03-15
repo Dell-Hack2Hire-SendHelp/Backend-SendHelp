@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllOrders = void 0;
+exports.approveOrder = exports.getOrderById = exports.getAllOrders = void 0;
 const client_1 = require("@prisma/client");
 const orderService_1 = require("../services/orderService");
 function getAllOrders(req, res) {
@@ -22,3 +22,22 @@ function getAllOrders(req, res) {
     });
 }
 exports.getAllOrders = getAllOrders;
+function getOrderById(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const id = parseInt(req.query.id);
+        if (isNaN(id))
+            return res.status(400).json({ message: "Invalid id" });
+        const queryRes = yield (0, orderService_1.findOrderById)(id);
+        res.status(200).json(queryRes);
+    });
+}
+exports.getOrderById = getOrderById;
+function approveOrder(req, res) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const id = parseInt(req.query.id);
+        if (isNaN(id))
+            return res.status(400).json({ message: "Invalid id" });
+        const queryRes = yield (0, orderService_1.updateOrderStatus)(id, client_1.OrderStatus.APPROVED);
+    });
+}
+exports.approveOrder = approveOrder;
