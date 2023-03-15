@@ -1,31 +1,30 @@
 import { OrderStatus, Order, Prisma } from "@prisma/client";
 import { DB } from "./db";
 
-import { createPaginator } from 'prisma-pagination';
-
 const db = DB.instance;
-const paginate = createPaginator({ perPage: 10 });
 
 
-interface OrderQueryParams {
-    page?: number;
-    searchByUsername?: string;
-    status?: OrderStatus;
+
+export async function findAllOrders() {
+    return await db.order.findMany();
+}
+
+
+export async function findOrderById(id: number) {
+    return await db.order.findUnique({
+        where: { id }
+    });
+}
+
+
+export async function findOrdersWhere(where: Prisma.OrderWhereInput) {
+    return await db.order.findMany({
+        where
+    });
 }
 
 
 
-function filterObj(
-    status?: OrderStatus, 
-    searchByUsername?: string,
-): Prisma.OrderFindManyArgs {
-
-    const filter = { where: {} as Prisma.OrderWhereInput };
-    if (status) filter.where.status = status;
-    if (searchByUsername) filter.where.customer = { username: { contains: searchByUsername, mode: "insensitive" } };
-
-    return filter;
-}
 
 
 
@@ -61,38 +60,6 @@ export async function insertNewOrder({
     });
 
     console.log(`Order created successfully at ${new Date().toLocaleString()}`);
-}
-
-
-
-
-
-export async function findOrderById(id: number) {
-    return await db.order.findUnique({
-        where: { id }
-    });
-}
-
-
-export async function findOrderByReceiverName(receiverName: string) {
-    return await db.order.findFirst({
-        where: {
-            receiver_name: receiverName
-        }
-    });
-}
-
-
-export async function findAllOrders({
-    page = 1,
-    searchByUsername,
-    status,
-}: OrderQueryParams) {
-    return await paginate<Order, Prisma.OrderFindManyArgs>(
-        db.order,
-        filterObj(status, searchByUsername),
-        { page, }
-    );
 }
 
 

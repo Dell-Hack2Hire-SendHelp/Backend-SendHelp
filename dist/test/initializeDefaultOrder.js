@@ -14,8 +14,10 @@ const orderService_1 = require("../services/orderService");
 function initializeDefaultOrder() {
     return __awaiter(this, void 0, void 0, function* () {
         console.log("Initializing default orders...");
-        const order1 = yield (0, orderService_1.findOrderByReceiverName)("Customer 1 Order");
-        if (!order1)
+        const order1 = yield (0, orderService_1.findOrdersWhere)({
+            receiver_name: "Customer 1 Order"
+        });
+        if (order1.length === 0)
             yield (0, orderService_1.insertNewOrder)({
                 receiversName: "Customer 1 Order",
                 receiversEmail: "customer1@gmail.com",

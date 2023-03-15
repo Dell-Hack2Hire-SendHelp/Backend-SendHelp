@@ -9,20 +9,32 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOrder = exports.findAllOrders = exports.findOrderByReceiverName = exports.findOrderById = exports.insertNewOrder = void 0;
+exports.updateOrder = exports.insertNewOrder = exports.findOrdersWhere = exports.findOrderById = exports.findAllOrders = void 0;
 const client_1 = require("@prisma/client");
 const db_1 = require("./db");
-const prisma_pagination_1 = require("prisma-pagination");
 const db = db_1.DB.instance;
-const paginate = (0, prisma_pagination_1.createPaginator)({ perPage: 10 });
-function filterObj(status, searchByUsername) {
-    const filter = { where: {} };
-    if (status)
-        filter.where.status = status;
-    if (searchByUsername)
-        filter.where.customer = { username: { contains: searchByUsername, mode: "insensitive" } };
-    return filter;
+function findAllOrders() {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield db.order.findMany();
+    });
 }
+exports.findAllOrders = findAllOrders;
+function findOrderById(id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield db.order.findUnique({
+            where: { id }
+        });
+    });
+}
+exports.findOrderById = findOrderById;
+function findOrdersWhere(where) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield db.order.findMany({
+            where
+        });
+    });
+}
+exports.findOrdersWhere = findOrdersWhere;
 function insertNewOrder({ receiversName, receiversEmail, treeNumbers, customerId, isCoordRequired, message = "This goes towards the restoration of the forest corridor along the Lower Kinabatangan, Sabah, malaysia, Borneo.", status = client_1.OrderStatus.IN_REVIEW, }) {
     return __awaiter(this, void 0, void 0, function* () {
         yield db.order.create({
@@ -42,30 +54,6 @@ function insertNewOrder({ receiversName, receiversEmail, treeNumbers, customerId
     });
 }
 exports.insertNewOrder = insertNewOrder;
-function findOrderById(id) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield db.order.findUnique({
-            where: { id }
-        });
-    });
-}
-exports.findOrderById = findOrderById;
-function findOrderByReceiverName(receiverName) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield db.order.findFirst({
-            where: {
-                receiver_name: receiverName
-            }
-        });
-    });
-}
-exports.findOrderByReceiverName = findOrderByReceiverName;
-function findAllOrders({ page = 1, searchByUsername, status, }) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield paginate(db.order, filterObj(status, searchByUsername), { page, });
-    });
-}
-exports.findAllOrders = findAllOrders;
 function updateOrder(id, data) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield db.order.update({

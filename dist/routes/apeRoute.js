@@ -6,5 +6,5 @@ const apeController_1 = require("../controllers/apeController");
 const router = (0, express_1.Router)();
 router.get('/getAllOrders', authMiddlewares_1.isApe, apeController_1.getAllOrders);
 router.get('/getOrderById', authMiddlewares_1.isApe, apeController_1.getOrderById);
-router.get('/updateOrderStatus', authMiddlewares_1.isApe, apeController_1.updateOrderStatus);
+router.post('/updateOrderStatus', authMiddlewares_1.isApe, apeController_1.updateOrderStatus);
 exports.default = router;
